@@ -90,6 +90,26 @@ This creates a downloadable Windows installer at:
 
 - `release/WorkOrbit-Setup-<version>.exe`
 
+## Install on Windows (For End Users)
+
+1. Download `WorkOrbit-Setup-<version>.exe` from the project release page.
+2. Double-click the installer.
+3. If Windows SmartScreen appears:
+  - Click **More info**.
+  - Click **Run anyway**.
+4. In the setup wizard:
+  - Choose installation folder (or keep default).
+  - Keep Desktop and Start Menu shortcuts enabled.
+  - Click **Install** and then **Finish**.
+5. Launch WorkOrbit from Start Menu or Desktop shortcut.
+
+If **Run anyway** is missing:
+
+1. Right-click the installer file.
+2. Open **Properties**.
+3. Check **Unblock**.
+4. Click **Apply** and run installer again.
+
 Optional portable (no installer) build:
 
 ```bash
