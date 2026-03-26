@@ -1,0 +1,102 @@
+{
+  "name": "workorbit",
+  "private": true,
+  "version": "1.2.0",
+  "description": "Desktop app for freelancers to manage clients, projects, invoices, payments, and tasks.",
+  "author": "WorkOrbit",
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "dev:web": "vite",
+    "dev:desktop": "wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "build:web": "tsc -b && vite build",
+    "build": "npm run build:installer",
+    "build:installer": "npm run generate:icons && npm run build:web && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder",
+    "build:unsigned": "npm run build:installer",
+    "build:signed": "npm run build:web && electron-builder",
+    "release:patch": "npm version patch --no-git-tag-version && npm run build:installer",
+    "release:minor": "npm version minor --no-git-tag-version && npm run build:installer",
+    "release:major": "npm version major --no-git-tag-version && npm run build:installer",
+    "release:signed:patch": "npm version patch --no-git-tag-version && npm run build:installer",
+    "release:signed:minor": "npm version minor --no-git-tag-version && npm run build:installer",
+    "release:signed:major": "npm version major --no-git-tag-version && npm run build:installer",
+    "build:portable": "npm run build:web && electron-packager . WorkOrbit --platform=win32 --arch=x64 --out release-portable --overwrite --prune=true --ignore=^/src$ --ignore=^/public$ --ignore=^/release$",
+    "start": "electron .",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.fmp.freelance",
+    "productName": "WorkOrbit",
+    "copyright": "Copyright (c) 2026 WorkOrbit",
+    "artifactName": "${productName}-Setup-${version}.${ext}",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/icon.ico",
+        "to": "icon.ico"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false,
+      "verifyUpdateCodeSignature": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "deleteAppDataOnUninstall": false,
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "shortcutName": "WorkOrbit"
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.575.0",
+    "pdfkit": "^0.17.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^40.6.0",
+    "electron-builder": "^26.8.1",
+    "electron-packager": "^17.1.2",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.34.4",
+    "vite": "^7.3.1",
+    "wait-on": "^9.0.4"
+  }
+}
